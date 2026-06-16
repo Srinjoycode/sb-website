@@ -29,11 +29,14 @@ COPY --from=builder /src/public /usr/share/nginx/html
 # Copy custom NGINX configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Install curl for health check
+RUN apk add --no-cache curl
+
 # Expose HTTP port
 EXPOSE 80
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD wget -qO- http://127.0.0.1/healthz || exit 1
+  CMD curl -fs http://127.0.0.1/healthz || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
