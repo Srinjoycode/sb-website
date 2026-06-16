@@ -16,8 +16,7 @@ on:
 permissions:
   contents: write        # push to gh-pages branch
   pull-requests: write   # post a comment with the preview URL
-  pages: write           # enable/configure GitHub Pages
-  administration: write  # required by the Pages creation API (createPagesSite)
+  pages: write           # needed to read Pages status via the API
 
 concurrency:
   group: pr-preview-${{ github.event.pull_request.number }}
@@ -61,7 +60,7 @@ jobs:
           keep_files: true
           commit_message: "preview: PR #${{ env.PR_NUMBER }} — ${{ github.event.pull_request.title }}"
 
-      - name: Enable GitHub Pages (idempotent — skipped if already configured)
+      - name: Check whether GitHub Pages is already configured
         id: enable-pages
         uses: actions/github-script@v7
         continue-on-error: true
@@ -69,43 +68,15 @@ jobs:
           script: |
             let pagesEnabled = false;
             try {
-              // Check whether Pages is already configured
               await github.rest.repos.getPages({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
               });
-              // Already configured — nothing to do
-              console.log('GitHub Pages already enabled, skipping configuration.');
+              console.log('GitHub Pages is enabled.');
               pagesEnabled = true;
             } catch (err) {
-              if (err.status === 404) {
-                // Pages not yet enabled — configure it from the gh-pages branch
-                try {
-                  await github.rest.repos.createPagesSite({
-                    owner: context.repo.owner,
-                    repo:  context.repo.repo,
-                    source: { branch: 'gh-pages', path: '/' },
-                  });
-                  console.log('GitHub Pages enabled on gh-pages branch.');
-                  pagesEnabled = true;
-                } catch (createErr) {
-                  // 409/422 means another concurrent run already enabled Pages — that's fine
-                  if (createErr.status === 409 || createErr.status === 422) {
-                    console.log(`GitHub Pages already being configured (status ${createErr.status}), skipping.`);
-                    pagesEnabled = true;
-                  } else if (createErr.status === 403) {
-                    console.log('WARNING: Could not auto-enable GitHub Pages (403 Forbidden). Manual setup required — see PR comment for instructions.');
-                    pagesEnabled = false;
-                  } else {
-                    throw createErr;
-                  }
-                }
-              } else if (err.status === 403) {
-                console.log('WARNING: Could not read GitHub Pages status (403 Forbidden). Manual setup may be required.');
-                pagesEnabled = false;
-              } else {
-                throw err;
-              }
+              // 404 = Pages not yet enabled; 403 = not enough token scope — either way, not enabled
+              console.log(`GitHub Pages not enabled or not accessible (status ${err.status}). Manual setup required.`);
             }
             core.setOutput('result', pagesEnabled);
 
@@ -131,9 +102,12 @@ jobs:
             const setupWarning = pagesEnabled ? '' : [
               '',
               '---',
-              '> ⚠️ **One-time setup required:** GitHub Pages is not yet enabled for this repository.',
-              '> To activate the preview, go to **Settings → Pages → Source** and select **`gh-pages` branch, `/ (root)` folder**, then click **Save**.',
-              '> The preview link above will work immediately after that setting is saved.',
+              '> ⚠️ **One-time setup required before the preview link works:**',
+              '> 1. Go to your repo → **Settings → Pages**',
+              '> 2. Under **Source**, select **Deploy from a branch**',
+              '> 3. Choose **`gh-pages`** branch and **`/ (root)`** folder, then click **Save**',
+              '>',
+              '> The preview link above will become live within ~1 minute of saving.',
             ].join('\n');
 
             const body = [
