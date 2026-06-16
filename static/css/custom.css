@@ -16,6 +16,7 @@
   --color-bg-alt:         #f8fafc;
   --color-bg-card:        #ffffff;
   --color-bg-nav:         #1e293b;
+  --color-bg-shell:       #f8fbff;
 
   --color-text:           #1e293b;
   --color-text-muted:     #64748b;
@@ -83,6 +84,26 @@
   --container-max: 1100px;
   --navbar-height: 4rem;
   --section-py: var(--space-20);
+
+  /* Background effects */
+  --page-shell-gradient:
+    radial-gradient(circle at top left, rgba(37,99,235,.08), transparent 32%),
+    radial-gradient(circle at top right, rgba(8,145,178,.07), transparent 30%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 46%, #f8fafc 100%);
+  --page-aurora:
+    radial-gradient(circle at 20% 20%, rgba(37,99,235,.16), transparent 28%),
+    radial-gradient(circle at 80% 15%, rgba(8,145,178,.16), transparent 24%),
+    radial-gradient(circle at 55% 78%, rgba(124,58,237,.12), transparent 26%);
+  --page-grid-color: rgba(148,163,184,.12);
+  --page-grid-fade: rgba(255,255,255,.78);
+  --hero-bg-gradient:
+    linear-gradient(135deg, rgba(255,255,255,.82) 0%, rgba(248,250,252,.68) 45%, rgba(219,234,254,.42) 100%);
+  --hero-glow:
+    radial-gradient(circle at 18% 22%, rgba(37,99,235,.14), transparent 32%),
+    radial-gradient(circle at 82% 20%, rgba(8,145,178,.16), transparent 28%),
+    radial-gradient(circle at 70% 72%, rgba(124,58,237,.1), transparent 30%);
+  --hero-spotlight:
+    radial-gradient(circle at 78% 38%, rgba(255,255,255,.7) 0%, rgba(255,255,255,.32) 32%, transparent 60%);
 }
 
 /* ---- 2. Dark Theme ---------------------------------------- */
@@ -96,6 +117,7 @@
   --color-bg-alt:         #1e293b;
   --color-bg-card:        #1e293b;
   --color-bg-nav:         #0f172a;
+  --color-bg-shell:       #020617;
 
   --color-text:           #f1f5f9;
   --color-text-muted:     #94a3b8;
@@ -108,6 +130,25 @@
   --shadow-md:  0 4px 6px rgba(0,0,0,.3);
   --shadow-lg:  0 10px 15px rgba(0,0,0,.4);
   --shadow-hover: 0 8px 24px rgba(96,165,250,.2);
+
+  --page-shell-gradient:
+    radial-gradient(circle at top left, rgba(96,165,250,.16), transparent 34%),
+    radial-gradient(circle at top right, rgba(34,211,238,.12), transparent 28%),
+    linear-gradient(180deg, #020617 0%, #0f172a 48%, #111c32 100%);
+  --page-aurora:
+    radial-gradient(circle at 18% 16%, rgba(96,165,250,.2), transparent 28%),
+    radial-gradient(circle at 84% 22%, rgba(34,211,238,.16), transparent 24%),
+    radial-gradient(circle at 52% 78%, rgba(124,58,237,.18), transparent 28%);
+  --page-grid-color: rgba(148,163,184,.11);
+  --page-grid-fade: rgba(2,6,23,.4);
+  --hero-bg-gradient:
+    linear-gradient(135deg, rgba(15,23,42,.88) 0%, rgba(15,23,42,.72) 38%, rgba(30,41,59,.58) 100%);
+  --hero-glow:
+    radial-gradient(circle at 16% 20%, rgba(96,165,250,.22), transparent 30%),
+    radial-gradient(circle at 82% 18%, rgba(34,211,238,.16), transparent 26%),
+    radial-gradient(circle at 68% 74%, rgba(124,58,237,.18), transparent 30%);
+  --hero-spotlight:
+    radial-gradient(circle at 76% 36%, rgba(96,165,250,.2) 0%, rgba(96,165,250,.08) 24%, transparent 58%);
 }
 
 /* ---- 3. Reset & Base -------------------------------------- */
@@ -124,13 +165,46 @@ html {
 }
 
 body {
+  position: relative;
+  min-height: 100vh;
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: var(--leading-normal);
   color: var(--color-text);
   background-color: var(--color-bg);
+  background-image: var(--page-shell-gradient);
   transition: background-color var(--transition-slow),
               color var(--transition-slow);
+  overflow-x: hidden;
+  isolation: isolate;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+body::before {
+  inset: -12%;
+  z-index: -2;
+  background: var(--page-aurora);
+  filter: blur(72px);
+  opacity: .95;
+  transform-origin: center;
+  animation: auroraFloat 28s ease-in-out infinite alternate;
+}
+
+body::after {
+  z-index: -1;
+  background-image:
+    linear-gradient(var(--page-grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--page-grid-color) 1px, transparent 1px),
+    linear-gradient(180deg, var(--page-grid-fade), transparent 24%, transparent 76%, var(--page-grid-fade));
+  background-size: 72px 72px, 72px 72px, 100% 100%;
+  opacity: .45;
 }
 
 img, svg { display: block; max-width: 100%; }
@@ -159,11 +233,42 @@ ul, ol { list-style: none; }
   background-color: var(--color-bg-alt);
 }
 .section--hero {
+  position: relative;
   padding-top: calc(var(--navbar-height) + var(--space-12));
   padding-bottom: var(--space-20);
-  background: linear-gradient(135deg,
-    var(--color-bg) 0%,
-    var(--color-bg-alt) 100%);
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    var(--hero-bg-gradient),
+    linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+}
+
+.section--hero::before,
+.section--hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.section--hero::before {
+  z-index: 0;
+  inset: -12% -8%;
+  background: var(--hero-glow);
+  filter: blur(18px);
+  opacity: .98;
+  transform-origin: center;
+  animation: heroGlowDrift 22s ease-in-out infinite alternate;
+}
+
+.section--hero::after {
+  z-index: 0;
+  inset: 10% 6% auto auto;
+  width: min(32rem, 48vw);
+  height: min(32rem, 48vw);
+  background: var(--hero-spotlight);
+  opacity: .9;
+  filter: blur(8px);
 }
 
 /* ---- 5. Navbar -------------------------------------------- */
@@ -274,6 +379,8 @@ ul, ol { list-style: none; }
 
 /* ---- 6. Hero / About Section ------------------------------ */
 .hero {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: var(--space-12);
@@ -328,9 +435,22 @@ ul, ol { list-style: none; }
 
 /* Profile image */
 .hero__image-wrap {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.hero__image-wrap::before {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(37,99,235,.16) 0%, rgba(37,99,235,.06) 45%, transparent 72%);
+  filter: blur(12px);
+  z-index: -1;
+  animation: heroHaloPulse 16s ease-in-out infinite;
 }
 .hero__image-ring {
   position: relative;
@@ -359,6 +479,41 @@ ul, ol { list-style: none; }
   font-weight: 700;
   align-items: center;
   justify-content: center;
+}
+
+@keyframes auroraFloat {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, 3%, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(4%, -2%, 0) scale(1.02);
+  }
+}
+
+@keyframes heroGlowDrift {
+  0% {
+    transform: translate3d(-1%, -2%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, 2%, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(-2%, 3%, 0) scale(1.02);
+  }
+}
+
+@keyframes heroHaloPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: .72;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: .92;
+  }
 }
 
 /* ---- 7. Section Styles ------------------------------------ */
@@ -1309,11 +1464,25 @@ ul, ol { list-style: none; }
 @media print {
   .navbar, .footer, .no-print, .post__share, .section__cta { display: none !important; }
   body { font-size: 11pt; color: #000; background: #fff; }
+  body::before, body::after, .section--hero::before, .section--hero::after, .hero__image-wrap::before {
+    display: none !important;
+  }
   a { color: #000; text-decoration: none; }
   .section { padding: 0.5cm 0; }
   .container { max-width: 100%; padding: 0; }
   .card { box-shadow: none; border: 1px solid #ddd; }
   .cv__section { page-break-inside: avoid; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  body::before,
+  .section--hero::before,
+  .hero__image-wrap::before {
+    animation: none;
+    transform: none;
+  }
 }
 
 /* ---- 26. Responsive -------------------------------------- */
@@ -1347,6 +1516,7 @@ ul, ol { list-style: none; }
   .hero__text { order: 2; }
   .hero__image-wrap { order: 1; }
   .hero__image-ring { width: 180px; height: 180px; }
+  .hero__image-wrap::before { width: 13rem; height: 13rem; }
   .hero__bio { margin-inline: auto; }
   .hero__links { justify-content: center; }
   .hero__interests { display: flex; flex-direction: column; align-items: center; }
