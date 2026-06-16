@@ -124,6 +124,12 @@
   --hero-glacier-sheen:
     radial-gradient(circle at 80% 22%, rgba(255,255,255,.72) 0%, rgba(255,255,255,.16) 26%, transparent 58%),
     radial-gradient(circle at 22% 78%, rgba(191,219,254,.24) 0%, transparent 38%);
+  --hero-portrait-border: rgba(255,255,255,.72);
+  --hero-portrait-frame:
+    linear-gradient(145deg, rgba(255,255,255,.95), rgba(219,234,254,.65));
+  --hero-portrait-shadow:
+    0 20px 45px rgba(15,23,42,.16),
+    0 6px 18px rgba(37,99,235,.14);
 
   /* Section ambient glows & hero transition */
   --section-bloom:
@@ -193,6 +199,12 @@
   --hero-glacier-sheen:
     radial-gradient(circle at 80% 24%, rgba(186,230,253,.18) 0%, rgba(96,165,250,.08) 24%, transparent 56%),
     radial-gradient(circle at 24% 78%, rgba(34,211,238,.1) 0%, transparent 36%);
+  --hero-portrait-border: rgba(186,230,253,.4);
+  --hero-portrait-frame:
+    linear-gradient(145deg, rgba(15,23,42,.96), rgba(30,41,59,.92));
+  --hero-portrait-shadow:
+    0 24px 48px rgba(2,6,23,.42),
+    0 10px 24px rgba(34,211,238,.12);
 
   /* Section ambient glows & hero transition (dark overrides) */
   --section-bloom:
@@ -548,13 +560,10 @@ ul, ol { list-style: none; }
   width: 304px;
   height: 304px;
   border-radius: 50%;
-  border: 5px solid rgba(255,255,255,.72);
+  border: 5px solid var(--hero-portrait-border);
   padding: 4px;
-  background:
-    linear-gradient(145deg, rgba(255,255,255,.95), rgba(219,234,254,.65));
-  box-shadow:
-    0 20px 45px rgba(15,23,42,.16),
-    0 6px 18px rgba(37,99,235,.14);
+  background: var(--hero-portrait-frame);
+  box-shadow: var(--hero-portrait-shadow);
   overflow: hidden;
   will-change: transform;
   animation: heroPortraitFloat 18s ease-in-out infinite;
