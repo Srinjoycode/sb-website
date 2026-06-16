@@ -90,6 +90,9 @@
   --motion-slow: 36s;
   --motion-medium: 30s;
   --motion-soft: 20s;
+  --motion-glacier-flow: 40s;
+  --motion-sheen-shift: 28s;
+  --motion-portrait-float: 18s;
 
   /* Background effects */
   --page-shell-gradient:
@@ -351,7 +354,7 @@ ul, ol { list-style: none; }
   background-position: center, 0% 0%;
   filter: blur(0);
   opacity: .86;
-  animation: heroGlacierFlow 40s ease-in-out infinite alternate;
+  animation: heroGlacierFlow var(--motion-glacier-flow) ease-in-out infinite alternate;
 }
 
 .section--hero::after {
@@ -373,7 +376,7 @@ ul, ol { list-style: none; }
     var(--hero-spotlight);
   opacity: .68;
   filter: blur(12px);
-  animation: heroSheenShift 28s ease-in-out infinite alternate;
+  animation: heroSheenShift var(--motion-sheen-shift) ease-in-out infinite alternate;
 }
 
 /* ---- 5. Navbar -------------------------------------------- */
@@ -568,7 +571,7 @@ ul, ol { list-style: none; }
   box-shadow: var(--hero-portrait-shadow);
   overflow: hidden;
   will-change: transform;
-  animation: heroPortraitFloat 18s ease-in-out infinite;
+  animation: heroPortraitFloat var(--motion-portrait-float) ease-in-out infinite;
 }
 .hero__image {
   width: 100%;
