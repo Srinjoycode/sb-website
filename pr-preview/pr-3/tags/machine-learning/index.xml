@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Machine-Learning on Srinjoy Bhuiya</title><link>https://Srinjoycode.github.io/sb-website/pr-preview/pr-3/tags/machine-learning/</link><description>Recent content in Machine-Learning on Srinjoy Bhuiya</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Thu, 15 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://Srinjoycode.github.io/sb-website/pr-preview/pr-3/tags/machine-learning/index.xml" rel="self" type="application/rss+xml"/><item><title>Streamflow Prediction in Snow-Dominated Basins: A Research Update</title><link>https://Srinjoycode.github.io/sb-website/pr-preview/pr-3/posts/2025/05/streamflow-prediction-in-snow-dominated-basins-a-research-update/</link><pubDate>Thu, 15 May 2025 00:00:00 +0000</pubDate><guid>https://Srinjoycode.github.io/sb-website/pr-preview/pr-3/posts/2025/05/streamflow-prediction-in-snow-dominated-basins-a-research-update/</guid><description>&lt;p>My thesis work at the University of Alberta focuses on a challenging problem at the intersection of deep learning and hydrology: &lt;strong>predicting river streamflow in snow-dominated basins&lt;/strong> where historical data is scarce.&lt;/p>
+&lt;h2 id="the-problem">The Problem&lt;/h2>
+&lt;p>River flow prediction is critical for:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Water resource management&lt;/strong> — municipal supply, agriculture&lt;/li>
+&lt;li>&lt;strong>Flood early warning&lt;/strong> — safety and infrastructure planning&lt;/li>
+&lt;li>&lt;strong>Climate impact assessment&lt;/strong> — understanding changing snowmelt patterns&lt;/li>
+&lt;/ul>
+&lt;p>Traditional hydrological models rely on well-calibrated physical parameters that require years of measurements. In remote or recently instrumented basins, these measurements simply don&amp;rsquo;t exist.&lt;/p></description></item></channel></rss>
