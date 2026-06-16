@@ -361,6 +361,7 @@ A GitHub Actions workflow automatically builds the Hugo site for every pull requ
    - Checks out the PR branch
    - Builds the Hugo site with a preview-specific `baseURL`
    - Pushes the built output to a `pr-preview/pr-<number>/` subdirectory on the `gh-pages` branch
+   - Enables GitHub Pages on the `gh-pages` branch (first run only, idempotent)
 3. A bot comment is posted (or updated) on the PR with a direct link:
 
 ```
@@ -370,7 +371,7 @@ A GitHub Actions workflow automatically builds the Hugo site for every pull requ
 
 4. When the PR is **closed** (merged or dismissed), a cleanup workflow removes the preview directory automatically.
 
-> **One-time setup:** Go to **Settings → Pages** in the repository and set the source to **"Deploy from a branch"** → branch `gh-pages` → folder `/` (root). This only needs to be done once.
+> **No manual setup required.** The workflow automatically enables GitHub Pages on the `gh-pages` branch on its first successful run. GitHub Pages can take 1–2 minutes to go live after the first deployment.
 
 ### Preview workflow files
 
