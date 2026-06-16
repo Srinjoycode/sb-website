@@ -112,6 +112,18 @@
     radial-gradient(circle at 78% 38%, rgba(255,255,255,.7) 0%, rgba(255,255,255,.32) 32%, transparent 60%);
   --hero-halo:
     radial-gradient(circle, rgba(37,99,235,.16) 0%, rgba(37,99,235,.06) 45%, transparent 72%);
+  --hero-glacier-base:
+    linear-gradient(135deg, rgba(246,250,255,.96) 0%, rgba(230,241,252,.88) 30%, rgba(209,228,246,.78) 62%, rgba(186,213,235,.72) 100%),
+    radial-gradient(circle at 18% 24%, rgba(255,255,255,.72) 0%, rgba(255,255,255,.08) 34%, transparent 58%),
+    radial-gradient(circle at 74% 30%, rgba(191,219,254,.42) 0%, transparent 34%),
+    radial-gradient(circle at 64% 72%, rgba(148,163,184,.18) 0%, transparent 28%);
+  --hero-glacier-texture:
+    repeating-linear-gradient(118deg, rgba(255,255,255,.28) 0 2px, transparent 2px 18px),
+    repeating-linear-gradient(-24deg, rgba(148,163,184,.11) 0 1px, transparent 1px 22px),
+    linear-gradient(90deg, rgba(255,255,255,.08), rgba(255,255,255,0) 22%, rgba(255,255,255,.12) 52%, rgba(255,255,255,0) 78%);
+  --hero-glacier-sheen:
+    radial-gradient(circle at 80% 22%, rgba(255,255,255,.72) 0%, rgba(255,255,255,.16) 26%, transparent 58%),
+    radial-gradient(circle at 22% 78%, rgba(191,219,254,.24) 0%, transparent 38%);
 
   /* Section ambient glows & hero transition */
   --section-bloom:
@@ -169,6 +181,18 @@
     radial-gradient(circle at 76% 36%, rgba(96,165,250,.2) 0%, rgba(96,165,250,.08) 24%, transparent 58%);
   --hero-halo:
     radial-gradient(circle, rgba(96,165,250,.22) 0%, rgba(34,211,238,.08) 44%, transparent 72%);
+  --hero-glacier-base:
+    linear-gradient(135deg, rgba(15,23,42,.96) 0%, rgba(22,35,56,.9) 30%, rgba(30,58,82,.8) 60%, rgba(17,34,58,.84) 100%),
+    radial-gradient(circle at 16% 20%, rgba(186,230,253,.16) 0%, rgba(96,165,250,.06) 28%, transparent 56%),
+    radial-gradient(circle at 82% 26%, rgba(34,211,238,.14) 0%, transparent 34%),
+    radial-gradient(circle at 58% 74%, rgba(148,163,184,.12) 0%, transparent 30%);
+  --hero-glacier-texture:
+    repeating-linear-gradient(118deg, rgba(191,219,254,.14) 0 2px, transparent 2px 20px),
+    repeating-linear-gradient(-22deg, rgba(148,163,184,.08) 0 1px, transparent 1px 24px),
+    linear-gradient(90deg, rgba(255,255,255,.04), rgba(255,255,255,0) 24%, rgba(191,219,254,.08) 54%, rgba(255,255,255,0) 80%);
+  --hero-glacier-sheen:
+    radial-gradient(circle at 80% 24%, rgba(186,230,253,.18) 0%, rgba(96,165,250,.08) 24%, transparent 56%),
+    radial-gradient(circle at 24% 78%, rgba(34,211,238,.1) 0%, transparent 36%);
 
   /* Section ambient glows & hero transition (dark overrides) */
   --section-bloom:
@@ -277,6 +301,14 @@ ul, ol { list-style: none; }
     linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
 }
 
+.section--hero--glacier {
+  background:
+    var(--hero-bottom-fade),
+    var(--hero-glacier-base),
+    var(--hero-bg-gradient),
+    linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+}
+
 .section--hero::before,
 .section--hero::after {
   content: "";
@@ -296,6 +328,18 @@ ul, ol { list-style: none; }
   animation: heroGlowDrift var(--motion-medium) ease-in-out infinite alternate;
 }
 
+.section--hero--glacier::before {
+  inset: -10% -6%;
+  background:
+    var(--hero-glow),
+    var(--hero-glacier-texture);
+  background-size: auto, 160% 160%;
+  background-position: center, 0% 0%;
+  filter: blur(0);
+  opacity: .86;
+  animation: heroGlacierFlow 40s ease-in-out infinite alternate;
+}
+
 .section--hero::after {
   z-index: 0;
   inset: 10% 6% auto auto;
@@ -304,6 +348,18 @@ ul, ol { list-style: none; }
   background: var(--hero-spotlight);
   opacity: .9;
   filter: blur(8px);
+}
+
+.section--hero--glacier::after {
+  inset: 4% 0 0;
+  width: auto;
+  height: auto;
+  background:
+    var(--hero-glacier-sheen),
+    var(--hero-spotlight);
+  opacity: .68;
+  filter: blur(12px);
+  animation: heroSheenShift 28s ease-in-out infinite alternate;
 }
 
 /* ---- 5. Navbar -------------------------------------------- */
@@ -489,19 +545,26 @@ ul, ol { list-style: none; }
 }
 .hero__image-ring {
   position: relative;
-  width: 240px;
-  height: 240px;
+  width: 304px;
+  height: 304px;
   border-radius: 50%;
-  border: 4px solid var(--color-primary);
+  border: 5px solid rgba(255,255,255,.72);
   padding: 4px;
-  background: var(--color-bg-card);
-  box-shadow: var(--shadow-lg);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.95), rgba(219,234,254,.65));
+  box-shadow:
+    0 20px 45px rgba(15,23,42,.16),
+    0 6px 18px rgba(37,99,235,.14);
+  overflow: hidden;
+  will-change: transform;
+  animation: heroPortraitFloat 18s ease-in-out infinite;
 }
 .hero__image {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  object-position: center 22%;
 }
 .hero__image-fallback {
   display: none;
@@ -548,6 +611,45 @@ ul, ol { list-style: none; }
   50% {
     transform: scale(1.08);
     opacity: .92;
+  }
+}
+
+@keyframes heroGlacierFlow {
+  0% {
+    transform: translate3d(-1.5%, -1%, 0) scale(1.02);
+    background-position: center, 0% 0%;
+  }
+  50% {
+    transform: translate3d(1.5%, 1.5%, 0) scale(1.05);
+    background-position: center, 46% 32%;
+  }
+  100% {
+    transform: translate3d(-2%, 2%, 0) scale(1.03);
+    background-position: center, 100% 78%;
+  }
+}
+
+@keyframes heroSheenShift {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+    opacity: .56;
+  }
+  50% {
+    transform: translate3d(1%, 2%, 0) scale(1.03);
+    opacity: .72;
+  }
+  100% {
+    transform: translate3d(2%, -2%, 0) scale(1.02);
+    opacity: .62;
+  }
+}
+
+@keyframes heroPortraitFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
   }
 }
 
@@ -1514,10 +1616,18 @@ ul, ol { list-style: none; }
 
   body::before,
   .section--hero::before,
-  .hero__image-wrap::before {
+  .section--hero::after,
+  .hero__image-wrap::before,
+  .hero__image-ring {
     animation: none;
     transform: none;
     filter: none;
+  }
+
+  body::before,
+  .section--hero::before,
+  .section--hero::after,
+  .hero__image-wrap::before {
     background: none;
     opacity: 0;
   }
@@ -1553,8 +1663,8 @@ ul, ol { list-style: none; }
   }
   .hero__text { order: 2; }
   .hero__image-wrap { order: 1; }
-  .hero__image-ring { width: 180px; height: 180px; }
-  .hero__image-wrap::before { width: 13rem; height: 13rem; }
+  .hero__image-ring { width: 220px; height: 220px; }
+  .hero__image-wrap::before { width: 16rem; height: 16rem; }
   .hero__bio { margin-inline: auto; }
   .hero__links { justify-content: center; }
   .hero__interests { display: flex; flex-direction: column; align-items: center; }
