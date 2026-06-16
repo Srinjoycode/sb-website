@@ -13,9 +13,10 @@ Complete guide for building, running, and maintaining the **Srinjoy Bhuiya Acade
 5. [Docker Build & Run](#docker-build--run)
 6. [Portainer Deployment](#portainer-deployment)
 7. [Auto-Redeploy Workflow](#auto-redeploy-workflow)
-8. [Customisation](#customisation)
-9. [Updating Resume Content](#updating-resume-content)
-10. [Troubleshooting](#troubleshooting)
+8. [PR Preview (Design Check Before Deployment)](#pr-preview-design-check-before-deployment)
+9. [Customisation](#customisation)
+10. [Updating Resume Content](#updating-resume-content)
+11. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -346,6 +347,37 @@ If you push a pre-built Docker image to a registry:
 For instant deploys:
 1. Create a GitHub Action that builds and pushes the image on every push to `main`
 2. Configure a Portainer webhook to re-pull and restart on new image
+
+---
+
+## PR Preview (Design Check Before Deployment)
+
+A GitHub Actions workflow automatically builds the Hugo site for every pull request and deploys it to a **temporary GitHub Pages URL** so you can inspect the full design before merging and triggering a production rebuild.
+
+### How it works
+
+1. Open (or push to) a pull request
+2. The **"Deploy PR Preview"** workflow runs automatically:
+   - Checks out the PR branch
+   - Builds the Hugo site with a preview-specific `baseURL`
+   - Pushes the built output to a `pr-preview/pr-<number>/` subdirectory on the `gh-pages` branch
+3. A bot comment is posted (or updated) on the PR with a direct link:
+
+```
+🔍 Live Preview
+➡️ https://<owner>.github.io/<repo>/pr-preview/pr-<number>/
+```
+
+4. When the PR is **closed** (merged or dismissed), a cleanup workflow removes the preview directory automatically.
+
+> **One-time setup:** Go to **Settings → Pages** in the repository and set the source to **"Deploy from a branch"** → branch `gh-pages` → folder `/` (root). This only needs to be done once.
+
+### Preview workflow files
+
+| File | Purpose |
+|------|---------|
+| `.github/workflows/preview.yml` | Build + deploy preview on PR push |
+| `.github/workflows/preview-cleanup.yml` | Remove preview when PR is closed |
 
 ---
 
