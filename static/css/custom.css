@@ -201,9 +201,10 @@ body::before {
   inset: var(--aurora-overflow);
   z-index: -2;
   background: var(--page-aurora);
-  filter: blur(56px);
+  filter: blur(40px);
   opacity: .95;
   transform-origin: center;
+  will-change: transform;
   animation: auroraFloat var(--motion-slow) ease-in-out infinite alternate;
 }
 
