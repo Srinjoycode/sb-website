@@ -38,9 +38,9 @@
 
   // Toggle button
   document.addEventListener("DOMContentLoaded", function () {
-    var toggleBtn = document.getElementById("themeToggle");
-    if (toggleBtn) {
-      toggleBtn.addEventListener("click", function () {
+    var themeToggleBtn = document.getElementById("themeToggle");
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener("click", function () {
         var current = html.getAttribute("data-theme");
         applyTheme(current === "dark" ? "light" : "dark");
       });

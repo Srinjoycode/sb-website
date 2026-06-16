@@ -39,7 +39,7 @@
           </div>
           <div>
             <strong>LinkedIn</strong>
-            <span>srinjoy-bhuiya</span>
+            <span>{{ . | replaceRE `^https?://[^/]+/in/([^/]+)/?$` `$1` }}</span>
           </div>
         </a>
         {{ end }}
@@ -51,7 +51,7 @@
           </div>
           <div>
             <strong>GitHub</strong>
-            <span>Srinjoycode</span>
+            <span>{{ . | replaceRE `^https?://[^/]+/([^/]+)/?$` `$1` }}</span>
           </div>
         </a>
         {{ end }}
