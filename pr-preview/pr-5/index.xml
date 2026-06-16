@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Srinjoy Bhuiya — Academic Portfolio on Srinjoy Bhuiya</title><link>https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/</link><description>Recent content in Srinjoy Bhuiya — Academic Portfolio on Srinjoy Bhuiya</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 01 Jun 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/index.xml" rel="self" type="application/rss+xml"/><item><title>Getting Started with Hugo: Building an Academic Portfolio</title><link>https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/posts/2025/06/getting-started-with-hugo-building-an-academic-portfolio/</link><pubDate>Sun, 01 Jun 2025 00:00:00 +0000</pubDate><guid>https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/posts/2025/06/getting-started-with-hugo-building-an-academic-portfolio/</guid><description>&lt;p>Building a personal academic website used to mean wrestling with WordPress plugins or paying for hosted services. With &lt;strong>Hugo&lt;/strong> and &lt;strong>Docker&lt;/strong>, you can have a fast, self-hosted, fully customisable site up and running in an afternoon.&lt;/p>
+&lt;p>This post walks through the approach I used for my own portfolio.&lt;/p>
+&lt;h2 id="why-hugo">Why Hugo?&lt;/h2>
+&lt;p>Hugo is a static site generator written in Go. It converts Markdown files and data files (JSON, YAML) into a complete HTML website. Key advantages for academics:&lt;/p></description></item><item><title>Streamflow Prediction in Snow-Dominated Basins: A Research Update</title><link>https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/posts/2025/05/streamflow-prediction-in-snow-dominated-basins-a-research-update/</link><pubDate>Thu, 15 May 2025 00:00:00 +0000</pubDate><guid>https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/posts/2025/05/streamflow-prediction-in-snow-dominated-basins-a-research-update/</guid><description>&lt;p>My thesis work at the University of Alberta focuses on a challenging problem at the intersection of deep learning and hydrology: &lt;strong>predicting river streamflow in snow-dominated basins&lt;/strong> where historical data is scarce.&lt;/p>
+&lt;h2 id="the-problem">The Problem&lt;/h2>
+&lt;p>River flow prediction is critical for:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Water resource management&lt;/strong> — municipal supply, agriculture&lt;/li>
+&lt;li>&lt;strong>Flood early warning&lt;/strong> — safety and infrastructure planning&lt;/li>
+&lt;li>&lt;strong>Climate impact assessment&lt;/strong> — understanding changing snowmelt patterns&lt;/li>
+&lt;/ul>
+&lt;p>Traditional hydrological models rely on well-calibrated physical parameters that require years of measurements. In remote or recently instrumented basins, these measurements simply don&amp;rsquo;t exist.&lt;/p></description></item><item><title>About</title><link>https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/about/</guid><description>&lt;h2 id="about-me">About Me&lt;/h2>
+&lt;p>I am a Master&amp;rsquo;s student in Computing Science (Thesis) at the &lt;strong>University of Alberta&lt;/strong>, working under the supervision of &lt;a href="https://webdocs.cs.ualberta.ca/~nray1/">Dr. Nilanjan Ray&lt;/a> at the &lt;a href="https://ualbertavisual.ca/">VISUAL Laboratory&lt;/a>.&lt;/p>
+&lt;p>My research sits at the intersection of &lt;strong>deep learning&lt;/strong>, &lt;strong>computer vision&lt;/strong>, and &lt;strong>real-world AI applications&lt;/strong> — ranging from biomedical imaging to environmental monitoring and time-series forecasting.&lt;/p>
+&lt;h2 id="research-focus">Research Focus&lt;/h2>
+&lt;p>My current thesis work focuses on developing large-scale pretrained models for river streamflow prediction in snow-dominated and data-scarce environments. I am particularly interested in:&lt;/p></description></item><item><title>Contact</title><link>https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/contact/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/contact/</guid><description>&lt;h2 id="lets-connect">Let&amp;rsquo;s Connect&lt;/h2>
+&lt;p>I am always happy to discuss research, collaborations, and opportunities.&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Channel&lt;/th>
+ &lt;th>Details&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;strong>Email&lt;/strong>&lt;/td>
+ &lt;td>&lt;a href="mailto:srinjoybhuiya@gmail.com">srinjoybhuiya@gmail.com&lt;/a>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;strong>LinkedIn&lt;/strong>&lt;/td>
+ &lt;td>&lt;a href="https://www.linkedin.com/in/srinjoy-bhuiya/">linkedin.com/in/srinjoy-bhuiya&lt;/a>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;strong>GitHub&lt;/strong>&lt;/td>
+ &lt;td>&lt;a href="https://github.com/Srinjoycode">github.com/Srinjoycode&lt;/a>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;strong>Location&lt;/strong>&lt;/td>
+ &lt;td>Edmonton, Canada&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h2 id="research-collaboration">Research Collaboration&lt;/h2>
+&lt;p>If you are interested in collaborating on research in:&lt;/p>
+&lt;ul>
+&lt;li>Generative AI and LLMs&lt;/li>
+&lt;li>Computer vision and medical imaging&lt;/li>
+&lt;li>Environmental AI and Earth observation&lt;/li>
+&lt;li>Time-series forecasting&lt;/li>
+&lt;/ul>
+&lt;p>Please feel free to reach out via email with a brief description of your project.&lt;/p></description></item><item><title>Curriculum Vitae</title><link>https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/cv/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/cv/</guid><description/></item><item><title>Projects</title><link>https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/projects/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/projects/</guid><description>&lt;h2 id="featured-projects">Featured Projects&lt;/h2>
+&lt;p>Below are selected projects from my academic and professional experience.
+For a full list please see the &lt;a href="#publications">Publications&lt;/a> and &lt;a href="#experience">Experience&lt;/a> sections on the home page, or view my &lt;a href="https://Srinjoycode.github.io/sb-website/pr-preview/pr-5/cv/">CV&lt;/a>.&lt;/p>
+&lt;hr>
+&lt;h3 id="streamflow-prediction-with-pretrained-fusion-attention-models-in-progress">Streamflow Prediction with Pretrained Fusion Attention Models &lt;em>(In Progress)&lt;/em>&lt;/h3>
+&lt;p>&lt;strong>Institution:&lt;/strong> University of Alberta&lt;br>
+&lt;strong>Supervisor:&lt;/strong> Dr. Nilanjan Ray&lt;/p>
+&lt;p>Developing long-term seasonal river water-flow forecasting models for data-scarce snow-dominated basins using large-scale pretraining on a novel attention-fusion architecture. Targeting the Bow River Basin near Calgary.&lt;/p></description></item></channel></rss>
