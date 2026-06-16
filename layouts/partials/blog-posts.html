@@ -1,0 +1,55 @@
+<section id="blog" class="section section--alt">
+  <div class="container">
+    <h2 class="section__title">Blog &amp; Updates</h2>
+    <p class="section__subtitle">Research notes, technical posts, and updates</p>
+
+    {{/* Fetch recent posts */}}
+    {{ $posts := where .Site.RegularPages "Section" "posts" }}
+    {{ $posts = $posts | first 3 }}
+
+    {{ if $posts }}
+    <div class="blog-grid">
+      {{ range $posts }}
+      <article class="blog-card card">
+        {{ with .Params.image }}
+        <div class="blog-card__img-wrap">
+          <img src="{{ . }}" alt="{{ $.Title }}" class="blog-card__img" loading="lazy">
+        </div>
+        {{ end }}
+        <div class="blog-card__body">
+          <div class="blog-card__meta">
+            <time class="blog-card__date" datetime="{{ .Date.Format "2006-01-02" }}">
+              {{ .Date.Format "January 2, 2006" }}
+            </time>
+            {{ if .Params.tags }}
+            <ul class="tag-list tag-list--sm" role="list">
+              {{ range first 2 .Params.tags }}
+              <li><a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag tag--sm">{{ . }}</a></li>
+              {{ end }}
+            </ul>
+            {{ end }}
+          </div>
+          <h3 class="blog-card__title">
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          </h3>
+          {{ with .Summary }}
+          <p class="blog-card__summary">{{ . | plainify | truncate 140 }}</p>
+          {{ end }}
+          <div class="blog-card__footer">
+            {{ if site.Params.readingTime }}
+            <span class="blog-card__reading-time">⏱ {{ .ReadingTime }} min read</span>
+            {{ end }}
+            <a href="{{ .RelPermalink }}" class="blog-card__read-more">Read more →</a>
+          </div>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+    <div class="section__cta">
+      <a href="{{ "posts/" | relURL }}" class="btn btn--outline">View All Posts →</a>
+    </div>
+    {{ else }}
+    <p class="section__empty">No posts yet — check back soon!</p>
+    {{ end }}
+  </div>
+</section>

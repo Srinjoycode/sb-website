@@ -1,0 +1,53 @@
+{{- $data := site.Data.volunteer -}}
+<section id="volunteer" class="section">
+  <div class="container">
+    <h2 class="section__title">Leadership &amp; Service</h2>
+    <p class="section__subtitle">Volunteer work, community leadership, and student engagement</p>
+
+    <div class="timeline">
+      {{ range $data.volunteer }}
+      <div class="timeline__item">
+        <div class="timeline__marker timeline__marker--service" aria-hidden="true"></div>
+        <div class="timeline__content card">
+
+          <div class="timeline__header">
+            <div class="timeline__main">
+              <h3 class="timeline__org">{{ .organization }}</h3>
+              <p class="timeline__role">
+                <strong>{{ .position }}</strong>
+                <span class="timeline__role-type">— {{ .role }}</span>
+              </p>
+              {{ with .location }}<p class="timeline__location">📍 {{ . }}</p>{{ end }}
+            </div>
+            <div class="timeline__meta">
+              <span class="timeline__date">
+                {{ .startDate | replaceRE `(\d{4})-(\d{2})` `$2/$1` }} —
+                {{ if eq .endDate "Present" }}Present{{ else }}{{ .endDate | replaceRE `(\d{4})-(\d{2})` `$2/$1` }}{{ end }}
+              </span>
+            </div>
+          </div>
+
+          {{ with .description }}
+          <p class="experience__desc">{{ . }}</p>
+          {{ end }}
+
+          {{ with .responsibilities }}
+          <ul class="experience__achievements">
+            {{ range . }}
+            <li>{{ . }}</li>
+            {{ end }}
+          </ul>
+          {{ end }}
+
+          {{ with .impact }}
+          <p class="volunteer__impact">
+            <strong>Impact:</strong> {{ . }}
+          </p>
+          {{ end }}
+
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>

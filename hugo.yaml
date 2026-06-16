@@ -1,0 +1,133 @@
+# =============================================================================
+# Hugo Academic Portfolio — Srinjoy Bhuiya
+# Complete site configuration
+# =============================================================================
+
+baseURL: "/"
+title: "Srinjoy Bhuiya"
+languageCode: "en-us"
+defaultContentLanguage: "en"
+
+# Enable useful Hugo features
+enableRobotsTXT: true
+enableGitInfo: false
+enableEmoji: true
+hasCJKLanguage: false
+pagination:
+  pagerSize: 6
+
+# Taxonomy configuration
+taxonomies:
+  tag: tags
+  category: categories
+
+# Output formats — HTML + RSS everywhere + JSON search index for home
+outputs:
+  home:
+    - HTML
+    - RSS
+  section:
+    - HTML
+    - RSS
+  page:
+    - HTML
+
+# Markup / Goldmark settings
+markup:
+  goldmark:
+    renderer:
+      unsafe: true          # allow raw HTML in Markdown
+  highlight:
+    style: "dracula"
+    lineNos: false
+    guessSyntax: true
+
+# Permalinks
+permalinks:
+  posts: "/posts/:year/:month/:slug/"
+
+# =============================================================================
+# Site Parameters
+# =============================================================================
+params:
+  description: >
+    Academic portfolio and personal website of Srinjoy Bhuiya —
+    Master's student in Computing Science at the University of Alberta,
+    AI & ML Researcher specialising in computer vision and generative AI.
+  author: "Srinjoy Bhuiya"
+
+  # Profile image (place at static/images/profile.jpg)
+  profileImage: "/images/profile.jpg"
+
+  # CV / Resume PDF (place at static/files/resume.pdf)
+  cvFile: "/files/resume.pdf"
+
+  # Theme defaults
+  defaultTheme: "light"   # "light" | "dark" | "auto"
+
+  # Blog / post features
+  readingTime: true
+  showWordCount: false
+  showLastModified: true
+
+  # Open Graph / Social metadata
+  images:
+    - "/images/og-default.png"
+
+  # Analytics — fill in your ID to activate
+  googleAnalytics: ""
+
+  # Comments — fill in shortname to activate Disqus
+  disqusShortname: ""
+
+  # Newsletter — fill in list URL to activate
+  newsletterURL: ""
+
+  # Social links (shown in footer and contact section)
+  social:
+    - name: "LinkedIn"
+      icon: "linkedin"
+      url: "https://www.linkedin.com/in/srinjoy-bhuiya/"
+    - name: "GitHub"
+      icon: "github"
+      url: "https://github.com/Srinjoycode"
+    - name: "Email"
+      icon: "email"
+      url: "mailto:srinjoybhuiya@gmail.com"
+
+# =============================================================================
+# Navigation menus
+# =============================================================================
+menu:
+  main:
+    - name: "Home"
+      url: "/"
+      weight: 10
+    - name: "About"
+      url: "/#about"
+      weight: 20
+    - name: "Research"
+      url: "/#publications"
+      weight: 30
+    - name: "CV"
+      url: "/cv/"
+      weight: 40
+    - name: "Blog"
+      url: "/posts/"
+      weight: 50
+    - name: "Contact"
+      url: "/#contact"
+      weight: 60
+
+# =============================================================================
+# Build settings
+# =============================================================================
+build:
+  useResourceCacheWhen: "fallback"
+
+# Security
+security:
+  enableInlineShortcodes: false
+  funcs:
+    getenv:
+      - "^HUGO_"

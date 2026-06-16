@@ -1,0 +1,20 @@
+{{- $data := site.Data.skills -}}
+<section id="skills" class="section">
+  <div class="container">
+    <h2 class="section__title">Skills</h2>
+    <p class="section__subtitle">Technical expertise and tools</p>
+
+    <div class="skills-grid">
+      {{ range $data.skills }}
+      <div class="skill-card card">
+        <h3 class="skill-card__category">{{ .category }}</h3>
+        <ul class="skill-card__list" role="list">
+          {{ range .skills }}
+          <li class="skill-badge">{{ . }}</li>
+          {{ end }}
+        </ul>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>

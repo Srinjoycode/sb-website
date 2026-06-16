@@ -1,0 +1,55 @@
+# =============================================================================
+# docker-compose.yml — Academic Portfolio (Portainer Git-based deployment)
+#
+# Usage:
+#   docker compose up -d --build
+#
+# Portainer Git deployment:
+#   Point Portainer to this repository and use this compose file.
+#   Enable "Update the stack" on git push to auto-redeploy.
+# =============================================================================
+
+version: "3.8"
+
+services:
+  portfolio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: srinjoy-portfolio:latest
+    container_name: srinjoy-portfolio
+    restart: unless-stopped
+
+    # -------------------------------------------------------
+    # Port mapping — change the host port (8080) to match the
+    # port your previous hello-world container was using.
+    # -------------------------------------------------------
+    ports:
+      - "8080:80"
+
+    # Environment (optional overrides)
+    environment:
+      - TZ=America/Edmonton
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+    # Labels for Nginx Proxy Manager / Traefik (optional)
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"   # Watchtower auto-update
+      # Traefik labels (uncomment and customise if using Traefik)
+      # - "traefik.enable=true"
+      # - "traefik.http.routers.portfolio.rule=Host(`yourdomain.com`)"
+      # - "traefik.http.routers.portfolio.entrypoints=websecure"
+
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

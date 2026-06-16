@@ -1,0 +1,60 @@
+{{ define "main" }}
+<div class="page-content section">
+  <div class="container">
+
+    <header class="page-header">
+      <h1 class="page-header__title">{{ .Title | default "Blog" }}</h1>
+      <p class="page-header__desc">Research notes, technical posts, and updates from my academic journey</p>
+    </header>
+
+    {{ if .Pages }}
+    <div class="list-grid">
+      {{ range .Pages }}
+      <article class="blog-card card">
+        {{ with .Params.image }}
+        <div class="blog-card__img-wrap">
+          <img src="{{ . }}" alt="{{ $.Title }}" class="blog-card__img" loading="lazy">
+        </div>
+        {{ end }}
+        <div class="blog-card__body">
+          <div class="blog-card__meta">
+            <time class="blog-card__date" datetime="{{ .Date.Format "2006-01-02" }}">
+              {{ .Date.Format "January 2, 2006" }}
+            </time>
+            {{ if .Params.tags }}
+            <ul class="tag-list tag-list--sm" role="list">
+              {{ range first 3 .Params.tags }}
+              <li><a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag tag--sm">{{ . }}</a></li>
+              {{ end }}
+            </ul>
+            {{ end }}
+          </div>
+          <h2 class="blog-card__title">
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          </h2>
+          {{ with .Summary }}
+          <p class="blog-card__summary">{{ . | plainify | truncate 200 }}</p>
+          {{ end }}
+          <div class="blog-card__footer">
+            {{ if site.Params.readingTime }}
+            <span class="blog-card__reading-time">⏱ {{ .ReadingTime }} min read</span>
+            {{ end }}
+            <a href="{{ .RelPermalink }}" class="blog-card__read-more">Read more →</a>
+          </div>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+
+    {{/* Pagination */}}
+    {{ template "_internal/pagination.html" . }}
+
+    {{ else }}
+    <div class="section__empty">
+      <p>No posts yet — stay tuned for research updates and technical insights!</p>
+    </div>
+    {{ end }}
+
+  </div>
+</div>
+{{ end }}

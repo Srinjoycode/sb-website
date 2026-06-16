@@ -1,0 +1,151 @@
+{{ define "main" }}
+{{- $profile  := site.Data.profile -}}
+{{- $edu      := site.Data.education -}}
+{{- $exp      := site.Data.experience -}}
+{{- $awards   := site.Data.awards -}}
+{{- $skills   := site.Data.skills -}}
+{{- $pubs     := site.Data.publications -}}
+{{- $vol      := site.Data.volunteer -}}
+
+<div class="cv section">
+  <div class="container">
+
+    {{/* CV Header */}}
+    <div class="cv__header card">
+      <div class="cv__profile">
+        <h1 class="cv__name">{{ $profile.name }}</h1>
+        <p class="cv__title">{{ $profile.title }}</p>
+        <div class="cv__contacts">
+          {{ with $profile.email }}<a href="mailto:{{ . }}" class="cv__contact-item">✉ {{ . }}</a>{{ end }}
+          {{ with $profile.phone }}<span class="cv__contact-item">📞 {{ . }}</span>{{ end }}
+          {{ with $profile.location }}<span class="cv__contact-item">📍 {{ . }}</span>{{ end }}
+          {{ with $profile.social.linkedin }}<a href="{{ . }}" class="cv__contact-item" target="_blank" rel="noopener">LinkedIn</a>{{ end }}
+          {{ with $profile.social.github }}<a href="{{ . }}" class="cv__contact-item" target="_blank" rel="noopener">GitHub</a>{{ end }}
+        </div>
+      </div>
+      <div class="cv__actions no-print">
+        {{ with site.Params.cvFile }}
+        <a href="{{ . | relURL }}" class="btn btn--primary" download>⬇ Download PDF</a>
+        {{ end }}
+        <button onclick="window.print()" class="btn btn--outline">🖨 Print CV</button>
+      </div>
+    </div>
+
+    {{/* Education */}}
+    <section class="cv__section">
+      <h2 class="cv__section-title">Education</h2>
+      {{ range $edu.education }}
+      <div class="cv__entry">
+        <div class="cv__entry-header">
+          <div>
+            <strong>{{ .degree }}</strong>
+            <span class="cv__entry-org">— {{ .institution }}, {{ .location }}</span>
+          </div>
+          <span class="cv__entry-date">{{ .startDate | replaceRE `(\d{4})-.*` `$1` }} – {{ .endDate | replaceRE `(\d{4})-.*` `$1` }}</span>
+        </div>
+        <div class="cv__entry-details">
+          {{ with .gpa }}<span class="badge badge--primary">GPA: {{ . }}</span>{{ end }}
+          {{ with .supervisor }}
+          <span>Supervisor: {{ if .url }}<a href="{{ .url }}" target="_blank" rel="noopener">{{ .name }}</a>{{ else }}{{ .name }}{{ end }}</span>
+          {{ end }}
+        </div>
+        {{ with .teachingAssistant }}
+        <p class="cv__entry-ta">TA: {{ range $i, $ta := . }}{{ if $i }}, {{ end }}{{ $ta.course }} ({{ $ta.title }}){{ end }}</p>
+        {{ end }}
+      </div>
+      {{ end }}
+    </section>
+
+    {{/* Experience */}}
+    <section class="cv__section">
+      <h2 class="cv__section-title">Experience</h2>
+      {{ range $exp.experience }}
+      <div class="cv__entry">
+        <div class="cv__entry-header">
+          <strong>{{ .organization }}{{ with .location }}, {{ . }}{{ end }}</strong>
+          <span class="cv__entry-date">
+            {{ with index .roles 0 }}{{ .startDate | replaceRE `(\d{4})-.*` `$1` }}{{ end }} –
+            {{ with index .roles (sub (len .roles) 1) }}{{ if eq .endDate "Present" }}Present{{ else }}{{ .endDate | replaceRE `(\d{4})-.*` `$1` }}{{ end }}{{ end }}
+          </span>
+        </div>
+        {{ range .roles }}
+        <div class="cv__role">{{ .title }}</div>
+        {{ end }}
+        {{ with .achievements }}
+        <ul class="cv__bullets">
+          {{ range . }}<li>{{ .description }}</li>{{ end }}
+        </ul>
+        {{ end }}
+      </div>
+      {{ end }}
+    </section>
+
+    {{/* Publications */}}
+    <section class="cv__section">
+      <h2 class="cv__section-title">Publications</h2>
+      {{ range $i, $pub := $pubs.publications }}
+      <div class="cv__pub">
+        <span class="cv__pub-num">{{ add $i 1 }}.</span>
+        <div>
+          <strong>{{ $pub.title }}</strong>
+          {{ with $pub.venue }}<em>({{ . }}{{ with $pub.publication }}, {{ . }}{{ end }})</em>{{ end }}
+          — {{ $pub.date | replaceRE `(\d{4})-.*` `$1` }}
+          <span class="badge badge--{{ if eq $pub.status "Accepted and Presented" }}success{{ else if eq $pub.status "Accepted" }}info{{ else if eq $pub.status "Preprint" }}warning{{ else }}muted{{ end }}">{{ $pub.status }}</span>
+          {{ with $pub.links }}
+          {{ with .doi }}<a href="{{ . }}" class="cv__link" target="_blank" rel="noopener">[DOI]</a>{{ end }}
+          {{ with .arxiv }}<a href="{{ . }}" class="cv__link" target="_blank" rel="noopener">[arXiv]</a>{{ end }}
+          {{ with .ieee }}<a href="{{ . }}" class="cv__link" target="_blank" rel="noopener">[IEEE]</a>{{ end }}
+          {{ end }}
+        </div>
+      </div>
+      {{ end }}
+    </section>
+
+    {{/* Awards */}}
+    <section class="cv__section">
+      <h2 class="cv__section-title">Honors &amp; Awards</h2>
+      {{ range $awards.awards }}
+      <div class="cv__entry">
+        <div class="cv__entry-header">
+          <strong>{{ .name }}</strong>
+          <span class="cv__entry-date">{{ .awardDate | replaceRE `(\d{4})-.*` `$1` }}{{ with .endDate }} – {{ . | replaceRE `(\d{4})-.*` `$1` }}{{ end }}</span>
+        </div>
+        <div class="cv__entry-org">{{ .organization }}, {{ .location }}</div>
+        {{ with .description }}<p>{{ . }}</p>{{ end }}
+      </div>
+      {{ end }}
+    </section>
+
+    {{/* Skills */}}
+    <section class="cv__section">
+      <h2 class="cv__section-title">Skills</h2>
+      {{ range $skills.skills }}
+      <div class="cv__skills-row">
+        <strong class="cv__skills-cat">{{ .category }}:</strong>
+        <span>{{ delimit .skills ", " }}</span>
+      </div>
+      {{ end }}
+    </section>
+
+    {{/* Volunteer */}}
+    <section class="cv__section">
+      <h2 class="cv__section-title">Leadership &amp; Service</h2>
+      {{ range $vol.volunteer }}
+      <div class="cv__entry">
+        <div class="cv__entry-header">
+          <div><strong>{{ .position }}</strong> — {{ .organization }}, {{ .location }}</div>
+          <span class="cv__entry-date">{{ .startDate | replaceRE `(\d{4})-.*` `$1` }} – {{ .endDate | replaceRE `(\d{4})-.*` `$1` }}</span>
+        </div>
+        {{ with .description }}<p>{{ . }}</p>{{ end }}
+      </div>
+      {{ end }}
+    </section>
+
+    {{/* Additional page content from cv.md */}}
+    {{ with .Content }}
+    <section class="cv__section prose">{{ . }}</section>
+    {{ end }}
+
+  </div>
+</div>
+{{ end }}

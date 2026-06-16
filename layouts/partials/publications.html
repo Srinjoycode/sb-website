@@ -1,0 +1,70 @@
+{{- $data := site.Data.publications -}}
+<section id="publications" class="section section--alt">
+  <div class="container">
+    <h2 class="section__title">Research &amp; Publications</h2>
+    <p class="section__subtitle">Peer-reviewed papers, conference presentations, and research projects</p>
+
+    <div class="pub-list">
+      {{ range $i, $pub := $data.publications }}
+      <article class="pub-card card" id="pub-{{ .id }}">
+
+        <div class="pub-card__header">
+          <span class="pub-card__number">{{ add $i 1 }}</span>
+          <div class="pub-card__meta">
+            {{ with .venue }}<span class="badge badge--venue">{{ . }}</span>{{ end }}
+            <span class="badge badge--{{ if eq .status "Accepted and Presented" }}success{{ else if eq .status "Accepted" }}info{{ else if eq .status "Preprint" }}warning{{ else }}muted{{ end }}">
+              {{ .status }}
+            </span>
+            {{ with .date }}<span class="pub-card__year">{{ . | replaceRE `(\d{4})-.*` `$1` }}</span>{{ end }}
+          </div>
+        </div>
+
+        <h3 class="pub-card__title">{{ .title }}</h3>
+
+        {{ with .publication }}
+        <p class="pub-card__journal"><em>{{ . }}</em></p>
+        {{ end }}
+
+        {{/* Authors */}}
+        {{ with .authors }}
+        <p class="pub-card__authors">
+          {{ range $ai, $author := . }}
+            {{- if gt $ai 0 }}, {{ end -}}
+            {{- if eq $author (site.Data.profile.name) -}}
+              <strong>{{ $author }}</strong>
+            {{- else -}}
+              {{ $author }}
+            {{- end -}}
+          {{ end }}
+        </p>
+        {{ end }}
+
+        {{ with .description }}
+        <p class="pub-card__abstract">{{ . }}</p>
+        {{ end }}
+
+        {{/* Research Focus tags */}}
+        {{ with .researchFocus }}
+        <ul class="tag-list tag-list--sm" role="list">
+          {{ range . }}
+          <li class="tag tag--sm">{{ . }}</li>
+          {{ end }}
+        </ul>
+        {{ end }}
+
+        {{/* External links */}}
+        {{ with .links }}
+        <div class="pub-card__links">
+          {{ with .doi }}<a href="{{ . }}" class="pub-link" target="_blank" rel="noopener noreferrer">📄 DOI</a>{{ end }}
+          {{ with .arxiv }}<a href="{{ . }}" class="pub-link pub-link--arxiv" target="_blank" rel="noopener noreferrer">arXiv</a>{{ end }}
+          {{ with .ieee }}<a href="{{ . }}" class="pub-link pub-link--ieee" target="_blank" rel="noopener noreferrer">IEEE</a>{{ end }}
+          {{ with .springer }}<a href="{{ . }}" class="pub-link pub-link--springer" target="_blank" rel="noopener noreferrer">Springer</a>{{ end }}
+          {{ with .github }}<a href="{{ . }}" class="pub-link" target="_blank" rel="noopener noreferrer">GitHub</a>{{ end }}
+        </div>
+        {{ end }}
+
+      </article>
+      {{ end }}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,91 @@
+{{ define "main" }}
+<article class="post section">
+  <div class="container post__container">
+
+    {{/* Post Header */}}
+    <header class="post__header">
+      <div class="post__meta">
+        <time class="post__date" datetime="{{ .Date.Format "2006-01-02" }}">
+          {{ .Date.Format "January 2, 2006" }}
+        </time>
+        {{ if site.Params.readingTime }}
+        <span class="post__reading-time">⏱ {{ .ReadingTime }} min read</span>
+        {{ end }}
+        {{ with .Params.author }}<span class="post__author">by {{ . }}</span>{{ end }}
+      </div>
+      <h1 class="post__title">{{ .Title }}</h1>
+      {{ with .Description }}<p class="post__subtitle">{{ . }}</p>{{ end }}
+
+      {{/* Tags */}}
+      {{ if .Params.tags }}
+      <ul class="tag-list" role="list">
+        {{ range .Params.tags }}
+        <li><a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag">{{ . }}</a></li>
+        {{ end }}
+      </ul>
+      {{ end }}
+
+      {{/* Featured image */}}
+      {{ with .Params.image }}
+      <figure class="post__hero">
+        <img src="{{ . }}" alt="{{ $.Title }}" class="post__hero-img" loading="lazy">
+        {{ with $.Params.imageCaption }}<figcaption>{{ . }}</figcaption>{{ end }}
+      </figure>
+      {{ end }}
+    </header>
+
+    {{/* Post Body */}}
+    <div class="post__content prose">
+      {{ .Content }}
+    </div>
+
+    {{/* Post Footer */}}
+    <footer class="post__footer">
+
+      {{/* Categories */}}
+      {{ if .Params.categories }}
+      <div class="post__categories">
+        <strong>Categories:</strong>
+        {{ range .Params.categories }}
+        <a href="{{ "/categories/" | relURL }}{{ . | urlize }}" class="tag">{{ . }}</a>
+        {{ end }}
+      </div>
+      {{ end }}
+
+      {{/* Social share */}}
+      <div class="post__share">
+        <strong>Share:</strong>
+        <a href="https://twitter.com/intent/tweet?text={{ .Title | urlquery }}&url={{ .Permalink | urlquery }}"
+           class="share-btn share-btn--twitter" target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter/X">
+          𝕏 Twitter
+        </a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ .Permalink | urlquery }}"
+           class="share-btn share-btn--linkedin" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn">
+          in LinkedIn
+        </a>
+      </div>
+
+      {{/* Navigation: prev / next */}}
+      <nav class="post__nav" aria-label="Post navigation">
+        {{ with .PrevInSection }}
+        <a href="{{ .RelPermalink }}" class="post__nav-prev">← {{ .Title }}</a>
+        {{ end }}
+        {{ with .NextInSection }}
+        <a href="{{ .RelPermalink }}" class="post__nav-next">{{ .Title }} →</a>
+        {{ end }}
+      </nav>
+
+      {{/* Back to blog */}}
+      <div class="post__back">
+        <a href="{{ "posts/" | relURL }}" class="btn btn--outline">← Back to Blog</a>
+      </div>
+
+      {{/* Disqus comments (optional) */}}
+      {{ if site.Params.disqusShortname }}
+        {{ template "_internal/disqus.html" . }}
+      {{ end }}
+
+    </footer>
+  </div>
+</article>
+{{ end }}

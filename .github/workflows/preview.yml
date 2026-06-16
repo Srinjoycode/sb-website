@@ -1,0 +1,135 @@
+# =============================================================================
+# PR Preview — builds the Hugo site and deploys a temporary preview to
+# GitHub Pages under:
+#   https://<owner>.github.io/<repo>/pr-preview/pr-<number>/
+#
+# Triggered on: PR opened, pushed to, or re-opened
+# =============================================================================
+
+name: Deploy PR Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# Restrict the GITHUB_TOKEN permissions to only what the job needs
+permissions:
+  contents: write        # push to gh-pages branch
+  pull-requests: write   # post a comment with the preview URL
+  pages: write           # needed to read Pages status via the API
+
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    name: Build & deploy preview
+    runs-on: ubuntu-latest
+
+    env:
+      HUGO_VERSION: "0.136.0"
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      DEPLOY_SUBDIR: pr-preview/pr-${{ github.event.pull_request.number }}
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up Hugo (extended)
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: Build Hugo site (preview baseURL)
+        run: |
+          PREVIEW_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${DEPLOY_SUBDIR}/"
+          hugo --minify --gc --baseURL "$PREVIEW_URL"
+
+      - name: Deploy to GitHub Pages (pr-preview subdirectory)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          destination_dir: ${{ env.DEPLOY_SUBDIR }}
+          # Keep everything else in gh-pages intact
+          keep_files: true
+          commit_message: "preview: PR #${{ env.PR_NUMBER }} — ${{ github.event.pull_request.title }}"
+
+      - name: Check whether GitHub Pages is already configured
+        id: enable-pages
+        uses: actions/github-script@v7
+        continue-on-error: true
+        with:
+          script: |
+            let pagesEnabled = false;
+            try {
+              await github.rest.repos.getPages({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+              console.log('GitHub Pages is enabled.');
+              pagesEnabled = true;
+            } catch (err) {
+              // 404 = Pages not yet enabled; 403 = not enough token scope — either way, not enabled
+              console.log(`GitHub Pages not enabled or not accessible (status ${err.status}). Manual setup required.`);
+            }
+            core.setOutput('result', pagesEnabled);
+
+      - name: Post preview URL as PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner  = context.repo.owner;
+            const repo   = context.repo.repo;
+            const prNum  = context.payload.pull_request.number;
+            const subdir = `pr-preview/pr-${prNum}`;
+            const url    = `https://${owner}.github.io/${repo}/${subdir}/`;
+            const pagesEnabled = '${{ steps.enable-pages.outputs.result }}' === 'true';
+
+            // Find an existing bot comment so we update rather than spam
+            const { data: comments } = await github.rest.issues.listComments({
+              owner, repo, issue_number: prNum,
+            });
+            const botComment = comments.find(
+              c => c.user.type === 'Bot' && c.body.includes('<!-- pr-preview -->')
+            );
+
+            const setupWarning = pagesEnabled ? '' : [
+              '',
+              '---',
+              '> ⚠️ **One-time setup required before the preview link works:**',
+              '> 1. Go to your repo → **Settings → Pages**',
+              '> 2. Under **Source**, select **Deploy from a branch**',
+              '> 3. Choose **`gh-pages`** branch and **`/ (root)`** folder, then click **Save**',
+              '>',
+              '> The preview link above will become live within ~1 minute of saving.',
+            ].join('\n');
+
+            const body = [
+              '<!-- pr-preview -->',
+              '## 🔍 Live Preview',
+              '',
+              'The Hugo site for this PR has been built and deployed to a temporary GitHub Pages preview:',
+              '',
+              `**➡️ ${url}**`,
+              '',
+              '> This preview is updated on every push to the PR branch and removed when the PR is closed.',
+              setupWarning,
+            ].join('\n');
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner, repo,
+                comment_id: botComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner, repo, issue_number: prNum, body,
+              });
+            }

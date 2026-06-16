@@ -1,32 +1,98 @@
-# Srinjoy Bhuiya - Resume Content JSON
+# Srinjoy Bhuiya — Academic Portfolio
 
-Structured resume content in JSON format for use with Hugo academic website templates.
+A ready-to-deploy **Hugo academic website** powered by structured JSON resume data, served via Docker, and managed through Portainer.
+
+> 📖 **Full deployment guide:** [README-HUGO.md](./README-HUGO.md)
 
 ## Overview
 
-This repository contains all resume and professional profile information extracted and structured from the LaTeX resume source (`main.tex`) into organized, reusable JSON files. This approach decouples content from presentation, making it easy to:
+This repository contains:
 
-- **Update content** without touching code
-- **Reuse data** across different templates
-- **Maintain consistency** across platforms
-- **Add new sections** easily
-- **Blog and post updates** in Markdown
+1. **Structured JSON resume content** (`data/`) — the single source of truth for all professional information
+2. **A complete Hugo static site** — templates, layouts, and styles that consume those JSON files
+3. **Docker + docker-compose configuration** — ready for Portainer Git-based deployment
+
+The content-template separation means:
+- **Update your CV** by editing a JSON file — no template changes needed
+- **Add a blog post** by creating a Markdown file — no code required
+- **Redeploy automatically** — Portainer detects Git changes and rebuilds
+
+## Quick Start
+
+### Local development
+
+```bash
+# Install Hugo Extended (v0.120+)
+# macOS: brew install hugo
+# Linux: see README-HUGO.md
+
+hugo server --buildDrafts
+# Site runs at http://localhost:1313
+```
+
+### Docker
+
+```bash
+docker compose up -d --build
+# Site runs at http://localhost:8080
+```
+
+### Portainer
+
+1. Create a new stack → Repository method
+2. Point to this GitHub repo
+3. Enable GitOps polling
+4. Deploy — done!
+
+See [README-HUGO.md](./README-HUGO.md) for the full guide.
+
+---
 
 ## Directory Structure
 
 ```
 .
-├── data/
-│   ├── profile.json          # Personal info and social links
-│   ├── education.json        # Educational background
-│   ├── experience.json       # Professional and internship experience
-│   ├── publications.json     # Research papers and publications
-│   ├── projects.json         # Research projects (if applicable)
-│   ├── awards.json           # Honors, scholarships, awards
-│   ├── skills.json           # Technical and professional skills
-│   └── volunteer.json        # Volunteer and leadership experience
-├── config.yaml               # Hugo configuration example
-└── README.md                 # This file
+├── hugo.yaml              # Hugo site configuration
+├── Dockerfile             # Multi-stage build (Hugo → NGINX)
+├── docker-compose.yml     # Portainer-ready stack definition
+├── nginx.conf             # NGINX server config
+│
+├── data/                  # ⭐ Edit these to update your resume
+│   ├── profile.json       # Name, bio, contact, social links
+│   ├── education.json     # Degrees and courses
+│   ├── experience.json    # Work history and internships
+│   ├── publications.json  # Research papers
+│   ├── awards.json        # Scholarships and honours
+│   ├── skills.json        # Technical skills by category
+│   └── volunteer.json     # Leadership and service
+│
+├── content/               # Markdown pages
+│   ├── _index.md          # Home page
+│   ├── about.md           # About page
+│   ├── cv.md              # CV page (auto-generated from JSON)
+│   ├── projects.md        # Projects page
+│   ├── contact.md         # Contact page
+│   └── posts/             # Blog posts
+│       ├── _index.md
+│       ├── first-blog-post.md
+│       └── example-research-update.md
+│
+├── layouts/               # Hugo templates (HTML)
+│   ├── index.html         # Home page (all sections)
+│   ├── _default/          # Base, single, list templates
+│   ├── cv/                # CV-specific layout
+│   ├── posts/             # Blog layouts
+│   └── partials/          # Reusable section partials
+│
+├── static/
+│   ├── css/custom.css     # All styles (dark mode, responsive)
+│   ├── js/custom.js       # Dark mode toggle, mobile nav
+│   ├── images/            # ← Place profile.jpg here
+│   └── files/             # ← Place resume.pdf here
+│
+├── archetypes/            # Templates for new content files
+├── assets/scss/           # Optional SCSS overrides
+└── README-HUGO.md         # Full deployment guide
 ```
 
 ## Data Files Description

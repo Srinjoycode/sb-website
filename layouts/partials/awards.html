@@ -1,0 +1,38 @@
+{{- $data := site.Data.awards -}}
+<section id="awards" class="section section--alt">
+  <div class="container">
+    <h2 class="section__title">Honors &amp; Awards</h2>
+    <p class="section__subtitle">Scholarships, grants, and recognitions</p>
+
+    <div class="awards-list">
+      {{ range $data.awards }}
+      <div class="award-item card">
+        <div class="award-item__icon" aria-hidden="true">🏆</div>
+        <div class="award-item__content">
+          <div class="award-item__header">
+            <h3 class="award-item__name">{{ .name }}</h3>
+            <div class="award-item__meta">
+              <span class="badge badge--primary">{{ .type }}</span>
+              <span class="award-item__date">
+                {{ .awardDate | replaceRE `(\d{4})-(\d{2})` `$1` }}
+                {{ with .endDate }} – {{ . | replaceRE `(\d{4})-(\d{2})` `$1` }}{{ end }}
+              </span>
+            </div>
+          </div>
+          <p class="award-item__org">{{ .organization }}{{ with .location }}, {{ . }}{{ end }}</p>
+          {{ with .description }}
+          <p class="award-item__desc">{{ . }}</p>
+          {{ end }}
+          {{ with .highlights }}
+          <ul class="award-item__highlights">
+            {{ range . }}
+            <li>{{ . }}</li>
+            {{ end }}
+          </ul>
+          {{ end }}
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>

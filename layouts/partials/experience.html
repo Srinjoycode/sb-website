@@ -1,0 +1,68 @@
+{{- $data := site.Data.experience -}}
+<section id="experience" class="section">
+  <div class="container">
+    <h2 class="section__title">Experience</h2>
+    <p class="section__subtitle">Professional, research, and internship roles</p>
+
+    <div class="timeline">
+      {{ range $data.experience }}
+      <div class="timeline__item">
+        <div class="timeline__marker" aria-hidden="true"></div>
+        <div class="timeline__content card">
+
+          <div class="timeline__header">
+            <div class="timeline__main">
+              <h3 class="timeline__org">{{ .organization }}</h3>
+              {{ with .location }}<p class="timeline__location">📍 {{ . }}</p>{{ end }}
+            </div>
+            <div class="timeline__meta">
+              {{/* Date range from first role start to last role end */}}
+              {{ $roles := .roles }}
+              {{ with $roles }}
+              {{ $first := index . 0 }}
+              {{ $last  := index . (sub (len .) 1) }}
+              <span class="timeline__date">
+                {{ $first.startDate | replaceRE `(\d{4})-(\d{2})` `$2/$1` }} —
+                {{ if eq $last.endDate "Present" }}Present{{ else }}{{ $last.endDate | replaceRE `(\d{4})-(\d{2})` `$2/$1` }}{{ end }}
+              </span>
+              {{ end }}
+            </div>
+          </div>
+
+          {{/* Multiple roles at same org */}}
+          {{ range .roles }}
+          <div class="experience__role">
+            <span class="experience__role-title">{{ .title }}</span>
+            <span class="experience__role-dates">
+              {{ .startDate | replaceRE `(\d{4})-(\d{2})` `$2/$1` }} –
+              {{ if eq .endDate "Present" }}Present{{ else }}{{ .endDate | replaceRE `(\d{4})-(\d{2})` `$2/$1` }}{{ end }}
+            </span>
+          </div>
+          {{ end }}
+
+          {{ with .supervisor }}
+          <p class="timeline__detail-item"><strong>Supervisor:</strong> {{ . }}</p>
+          {{ end }}
+
+          {{ with .description }}
+          <p class="experience__desc">{{ . }}</p>
+          {{ end }}
+
+          {{/* Achievements */}}
+          {{ with .achievements }}
+          <ul class="experience__achievements">
+            {{ range . }}
+            <li>
+              <strong>{{ .title }}:</strong>
+              {{ .description }}
+            </li>
+            {{ end }}
+          </ul>
+          {{ end }}
+
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>

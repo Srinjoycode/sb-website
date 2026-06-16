@@ -1,0 +1,86 @@
+{{- $data := site.Data.education -}}
+<section id="education" class="section section--alt">
+  <div class="container">
+    <h2 class="section__title">Education</h2>
+    <p class="section__subtitle">Academic background and training</p>
+
+    <div class="timeline">
+      {{ range $data.education }}
+      <div class="timeline__item">
+        <div class="timeline__marker" aria-hidden="true"></div>
+        <div class="timeline__content card">
+
+          <div class="timeline__header">
+            <div class="timeline__main">
+              <h3 class="timeline__degree">{{ .degree }}</h3>
+              <p class="timeline__institution">{{ .institution }}</p>
+              <p class="timeline__location">📍 {{ .location }}</p>
+            </div>
+            <div class="timeline__meta">
+              <span class="timeline__date">
+                {{ .startDate | replaceRE `(\d{4})-(\d{2})` `$2/$1` }} —
+                {{ if eq .endDate "Present" }}Present{{ else }}{{ .endDate | replaceRE `(\d{4})-(\d{2})` `$2/$1` }}{{ end }}
+              </span>
+              {{ with .gpa }}
+              <span class="badge badge--primary">GPA: {{ . }}</span>
+              {{ end }}
+            </div>
+          </div>
+
+          {{/* Supervisor & Lab */}}
+          {{ if or .supervisor .laboratory }}
+          <div class="timeline__details">
+            {{ with .supervisor }}
+            <p class="timeline__detail-item">
+              <strong>Supervisor:</strong>
+              {{ if .url }}<a href="{{ .url }}" target="_blank" rel="noopener">{{ .name }}</a>{{ else }}{{ .name }}{{ end }}
+            </p>
+            {{ end }}
+            {{ with .laboratory }}
+            <p class="timeline__detail-item">
+              <strong>Lab:</strong>
+              {{ if .url }}<a href="{{ .url }}" target="_blank" rel="noopener">{{ .name }}</a>{{ else }}{{ .name }}{{ end }}
+            </p>
+            {{ end }}
+          </div>
+          {{ end }}
+
+          {{/* Courses */}}
+          {{ with .courses }}
+          <div class="timeline__courses">
+            <strong>Key Courses:</strong>
+            <ul class="tag-list tag-list--sm" role="list">
+              {{ range . }}
+              <li class="tag tag--sm">{{ . }}</li>
+              {{ end }}
+            </ul>
+          </div>
+          {{ end }}
+
+          {{/* Teaching Assistant */}}
+          {{ with .teachingAssistant }}
+          <div class="timeline__ta">
+            <strong>Teaching Assistant:</strong>
+            <ul class="ta-list">
+              {{ range . }}
+              <li><span class="badge badge--secondary">{{ .course }}</span> {{ .title }}</li>
+              {{ end }}
+            </ul>
+          </div>
+          {{ end }}
+
+          {{/* Highlights */}}
+          {{ with .highlights }}
+          <ul class="timeline__highlights">
+            {{ range . }}
+            <li>{{ . }}</li>
+            {{ end }}
+          </ul>
+          {{ end }}
+
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
