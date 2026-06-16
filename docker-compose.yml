@@ -1,28 +1,33 @@
 # =============================================================================
-# docker-compose.yml — Academic Portfolio (Portainer Git-based deployment)
+# docker-compose.yml — Academic Portfolio
 #
-# Usage:
+# Usage (local build):
 #   docker compose up -d --build
 #
-# Portainer Git deployment:
-#   Point Portainer to this repository and use this compose file.
-#   Enable "Update the stack" on git push to auto-redeploy.
+# Homelab / Portainer deployment:
+#   The image is built and pushed to GHCR by GitHub Actions on every push to
+#   main.  Point Portainer at this compose file and let Watchtower handle
+#   pulling the latest image automatically.
+#
+#   Image: ghcr.io/srinjoycode/sb-website:latest
 # =============================================================================
 
 version: "3.8"
 
 services:
   portfolio:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: srinjoy-portfolio:latest
+    # Pull the pre-built image from GitHub Container Registry.
+    # GitHub Actions builds and pushes this on every push to main.
+    # To build locally instead, comment out `image` and uncomment `build`.
+    image: ghcr.io/srinjoycode/sb-website:latest
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     container_name: srinjoy-portfolio
     restart: unless-stopped
 
     # -------------------------------------------------------
-    # Port mapping — change the host port (8080) to match the
-    # port your previous hello-world container was using.
+    # Port mapping — change the host port if needed.
     # -------------------------------------------------------
     ports:
       - "8888:80"
@@ -31,9 +36,9 @@ services:
     environment:
       - TZ=America/Edmonton
 
-    # Health check
+    # Health check — uses curl (installed in the Docker image)
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
+      test: ["CMD", "curl", "-fs", "http://127.0.0.1/healthz"]
       interval: 30s
       timeout: 5s
       retries: 3

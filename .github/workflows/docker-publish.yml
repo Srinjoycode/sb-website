@@ -1,0 +1,62 @@
+# =============================================================================
+# docker-publish.yml — Build and push the portfolio Docker image to GHCR
+#
+# Triggered on every push to main (and manually via workflow_dispatch).
+# The resulting image is available at:
+#   ghcr.io/srinjoycode/sb-website:latest
+#
+# Watchtower on your homelab polls GHCR and automatically re-deploys the
+# container when a new image is pushed here.
+# =============================================================================
+
+name: Build & Push Docker Image
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    name: Build & push to GHCR
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write   # required to push to ghcr.io
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata (tags & labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            # Always tag the main branch as "latest"
+            type=raw,value=latest,enable={{is_default_branch}}
+            # Also tag with the short commit SHA for traceability
+            type=sha
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
